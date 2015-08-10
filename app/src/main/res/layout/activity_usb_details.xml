@@ -1,0 +1,75 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="benwang93.com.usbexplorer.UsbDetailsActivity">
+
+    <TableRow
+        android:id="@+id/tableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Device ID:"/>
+        <TextView android:id="@+id/textViewDeviceId"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Device Name:"/>
+        <TextView android:id="@+id/textViewDeviceName"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Device Protocol:"/>
+        <TextView android:id="@+id/textViewDeviceProtocol"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Device Subclass:"/>
+        <TextView android:id="@+id/textViewDeviceSubclass"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Product Id:"/>
+        <TextView android:id="@+id/textViewProductId"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableRow9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView android:text="Vendor ID:"/>
+        <TextView android:id="@+id/textViewVendorId"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/tableButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/buttonClose"
+            android:text="Close"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/buttonConnect"
+            android:text="Connect"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"/>
+
+    </TableRow>
+
+
+</TableLayout>
