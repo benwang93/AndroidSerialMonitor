@@ -40,7 +40,7 @@ public class UsbDetailsActivity extends AppCompatActivity {
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UsbManager mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);;
+                UsbManager mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 
                 // Request permission to access device
                 PendingIntent mPermissionIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(ACTION_USB_PERMISSION), 0);
@@ -72,8 +72,12 @@ public class UsbDetailsActivity extends AppCompatActivity {
                     if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
                         if(device != null){
                             //call method to set up device communication
-                            //scanUSB();
                             Toast.makeText(getApplicationContext(), "USB Connection Successful!!", Toast.LENGTH_SHORT).show();
+
+                            // Start USB communication activity (serial monitor)
+                            Intent serialMonitorIntent = new Intent(getApplicationContext(), SerialMonitorActivity.class);
+                            serialMonitorIntent.putExtra(UsbManager.EXTRA_DEVICE, device);
+                            startActivity(serialMonitorIntent);
                         }
                     }
                     else {
@@ -122,7 +126,6 @@ public class UsbDetailsActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "device id: " + device.getDeviceId());
-//        Toast.makeText(getApplicationContext(), "device id: "+device.getDeviceId(), Toast.LENGTH_SHORT).show();
         textViewDeviceId.setText(Integer.toString(device.getDeviceId()));
 
         // Display Device Name
@@ -137,21 +140,9 @@ public class UsbDetailsActivity extends AppCompatActivity {
         TextView textViewDeviceSubclass = (TextView) findViewById(R.id.textViewDeviceSubclass);
         textViewDeviceSubclass.setText(Integer.toString(device.getDeviceSubclass()));
 
-        // Display Manufacturer Name
-//        TextView textViewManufacturerName = (TextView) findViewById(R.id.textViewManufacturerName);
-//        textViewManufacturerName.setText(device.getManufacturerName());
-
         // Display Product ID
         TextView textViewProductId = (TextView) findViewById(R.id.textViewProductId);
         textViewProductId.setText(Integer.toString(device.getProductId()));
-
-        // Display Product Name
-//        TextView textViewProductName = (TextView) findViewById(R.id.textViewProductName);
-//        textViewProductName.setText(device.getProductName());
-
-        // Display Serial Number
-//        TextView textViewSerialNumber = (TextView) findViewById(R.id.textViewSerialNumber);
-//        textViewSerialNumber.setText(device.getSerialNumber());
 
         // Display Vendor ID
         TextView textViewVendorId = (TextView) findViewById(R.id.textViewVendorId);

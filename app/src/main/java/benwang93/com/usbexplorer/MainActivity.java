@@ -129,21 +129,33 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Found device: " + usbNames.lastElement());
         }
 
+        // DEBUG: Toast number of devices found
+        Toast.makeText(this, "Found " + usbNames.size() + " devices.", Toast.LENGTH_SHORT).show();
+
         // DEBUG: add dummy device
         usbNames.add("dummy");
 
         // No devices found
-        if (usbNames.size() == 0){
-            Toast.makeText(this, "No USB devices found.", Toast.LENGTH_SHORT).show();
-            if (usbListAdapter != null)
-                usbListAdapter.clear();
-        } else {
-            // Create array adapter for USB devices
-            usbListAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, usbNames);
+//        if (usbNames.size() == 0){
+//            Toast.makeText(this, "No USB devices found.", Toast.LENGTH_SHORT).show();
+//            if (usbListAdapter != null) {
+//                usbListAdapter.clear();
+//
+//            }
+//        } else {
+//            // Create array adapter for USB devices
+//            usbListAdapter = new ArrayAdapter<String>(this,
+//                    android.R.layout.simple_list_item_1, usbNames);
+//
+//
+//        }
+        usbListAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, usbNames);
+//        usbListAdapter.notifyDataSetChanged();
 
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(usbListAdapter);
 
-        }
     }
 
     private void scanUSB(){

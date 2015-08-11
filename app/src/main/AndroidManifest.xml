@@ -32,6 +32,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="benwang93.com.usbexplorer.MainActivity" />
         </activity>
+        <activity
+            android:name=".SerialMonitorActivity"
+            android:label="@string/title_activity_serial_monitor"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="benwang93.com.usbexplorer.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
