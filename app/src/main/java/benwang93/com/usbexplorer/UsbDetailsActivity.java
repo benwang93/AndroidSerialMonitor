@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbEndpoint;
+import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,12 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UsbDetailsActivity extends AppCompatActivity {
-
+    // Strings
     private static final String ACTION_USB_PERMISSION =
             "com.benwang93.USB_PERMISSION";
     public static final String TAG = "USB_Details";
 
+    // USB device/manager/etc
     private UsbDevice device;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +81,7 @@ public class UsbDetailsActivity extends AppCompatActivity {
 
                             // Start USB communication activity (serial monitor)
                             Intent serialMonitorIntent = new Intent(getApplicationContext(), SerialMonitorActivity.class);
-                            serialMonitorIntent.putExtra(UsbManager.EXTRA_DEVICE, device);
+                            serialMonitorIntent.putExtra(MainActivity.EXTRA_USB_DEVICE, device);
                             startActivity(serialMonitorIntent);
                         }
                     }
@@ -147,5 +152,9 @@ public class UsbDetailsActivity extends AppCompatActivity {
         // Display Vendor ID
         TextView textViewVendorId = (TextView) findViewById(R.id.textViewVendorId);
         textViewVendorId.setText(Integer.toString(device.getVendorId()));
+
+        // Display Vendor ID
+        TextView textViewInterfaceCount = (TextView) findViewById(R.id.textViewInterfaceCount);
+        textViewInterfaceCount.setText(Integer.toString(device.getInterfaceCount()));
     }
 }

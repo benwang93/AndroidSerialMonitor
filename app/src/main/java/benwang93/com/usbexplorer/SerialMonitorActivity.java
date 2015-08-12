@@ -4,6 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.usb.UsbDevice;
+import android.hardware.usb.UsbDeviceConnection;
+import android.hardware.usb.UsbEndpoint;
+import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,8 +20,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SerialMonitorActivity extends AppCompatActivity {
-
+    // USB device/manager
+    private UsbManager mUsbManager;
     UsbDevice device;
+
+    // Variables for sending via USB
+    private static int TIMEOUT = 0;
+    private boolean forceClaim = true;
+
+    // UI Elements
+    private TextView textViewSM;
+    private EditText editTextSM;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +41,23 @@ public class SerialMonitorActivity extends AppCompatActivity {
         Intent intent = getIntent();
         device = intent.getParcelableExtra(MainActivity.EXTRA_USB_DEVICE);
 
+        // Get USB manager for send/receive
+        mUsbManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+
         // UI elements
-        final TextView textViewSM = (TextView) findViewById(R.id.textViewSerialMonitor);
+        textViewSM = (TextView) findViewById(R.id.textViewSerialMonitor);
         textViewSM.setMovementMethod(new ScrollingMovementMethod());
-        final EditText editTextSM = (EditText) findViewById(R.id.editTextSerialMonitor);
+        editTextSM = (EditText) findViewById(R.id.editTextSerialMonitor);
+
+//        editTextSM.append("\nDevice is null?: " + (device == null));
 
         // Send button
         findViewById(R.id.buttonSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                sendSerial(editTextSM.getText().toString());
                 textViewSM.append("\n"+editTextSM.getText());
                 editTextSM.setText("");
 
@@ -60,6 +80,8 @@ public class SerialMonitorActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        debugPrint();
     }
 
     @Override
@@ -98,4 +120,39 @@ public class SerialMonitorActivity extends AppCompatActivity {
             }
         }
     };
+    // Send serial message
+    void sendSerial(String message){
+        // Variables
+        byte[] bytes;
+
+        // Extract text
+        bytes = message.getBytes();
+
+        // DEBUG: Show message being sent
+        Toast.makeText(getApplicationContext(), "Sending: " + bytes, Toast.LENGTH_SHORT).show();
+
+        // Send text over serial
+        UsbInterface intf = device.getInterface(1);
+        UsbEndpoint endpoint = intf.getEndpoint(0);
+        UsbDeviceConnection connection = mUsbManager.openDevice(device);
+        connection.claimInterface(intf, forceClaim);
+        connection.bulkTransfer(endpoint, bytes, bytes.length, TIMEOUT); //do in another thread
+    }
+
+    private void debugPrint(){
+//        textViewSM.append("\ndebugPrint() says hello world!");
+        textViewSM.append("\nNum USB interfaces: " + device.getInterfaceCount());
+
+        for (int intNum = 0; intNum < device.getInterfaceCount(); ++ intNum){
+            UsbInterface intf = device.getInterface(intNum);
+
+            textViewSM.append("\nScanning interface " + intNum + " for endpoints");
+
+            for (int endptNum = 0; endptNum < intf.getEndpointCount(); ++endptNum){
+                UsbEndpoint endpt = intf.getEndpoint(endptNum);
+
+                textViewSM.append("\n\t"+endpt.toString());
+            }
+        }
+    }
 }
